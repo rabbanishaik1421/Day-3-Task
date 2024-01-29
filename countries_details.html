@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Country Wise Details</title>
+    <style>
+        table th, table td{
+            text-align: left;
+        }
+        </style>
+</head>
+<body>
+    <table border="1">
+        <thead><tr><th>#</th><th>Country</th><th>Region</th><th>Sub Region</th><th>Population</th></tr></thead>
+        <tbody id="countrylist"></tbody>
+    </table>
+    <script>
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function(){
+            if(this.readyState == 4 && this.status == 200){
+                var jsonData = JSON.parse(this.responseText);
+                var countryList = '';
+                var sno=1;
+                for(i=0;i<jsonData.length;i++){
+                    var data = jsonData[i];
+                    var countryName = data.name.common;
+                    var region = data.region;
+                    var subRegion = data.subregion;
+                    var population = data.population;
+                    //console.log(countryName+"=>"+region+"=>"+subRegion);
+                    countryList += '<tr><td>'+sno+'</td><td>'+countryName+'</td><td>'+region+'</td><td>'+subRegion+'</td><td>'+population+'</td></tr>';
+                    sno++;
+                }
+
+                document.getElementById('countrylist').innerHTML = countryList;
+            }
+        }
+
+        xhr.open('GET', 'https://restcountries.com/v3.1/all', true);
+        xhr.send();
+    </script>
+</body>
+</html>
