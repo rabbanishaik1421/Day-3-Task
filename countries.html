@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countries List</title>
+</head>
+<body>
+    <div id="flags"></div>
+    <script>
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function(){
+            if(this.readyState == 4 && this.status == 200){
+                var jsonData = xhr.responseText;
+                var data = JSON.parse(jsonData);
+                var flagsList = "";
+                for(i=0;i<data.length;i++){
+                    //console.log(data[i])
+                    if(data[i].hasOwnProperty('flags')){
+                        var flags = data[i].flags;
+                        //console.log(data[i].flags.png);
+                        var img = flags.png;
+                        flagsList += '<img src="'+img+'" width="100" />';
+                    }                                    
+                }
+
+                document.getElementById('flags').innerHTML = flagsList;
+            }
+        }
+
+        xhr.open('GET', 'https://restcountries.com/v3.1/all', true);
+        xhr.send();
+    </script>
+</body>
+</html>
